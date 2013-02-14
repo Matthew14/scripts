@@ -6,7 +6,7 @@ except:
 	import sys
 	print("Need python 2.x.x, your version is: " +sys.version.split(' ')[0])
 	sys.exit(1)
-
+url ="http://soomka.com/nadsat.html"
 def getDict():
 	"""
 	Uses the urllib22 library to open http://soomka.com/nadsat.html, which is
@@ -15,7 +15,7 @@ def getDict():
 	which is returned
 	"""
 	try:
-		request = urllib2.Request("http://soomka.com/nadsat.html")
+		request = urllib2.Request(url)
 		handle = urllib2.urlopen(request)
 		content = handle.read()
 	except Exception:
@@ -87,16 +87,9 @@ def main():
 			for word in words:
 				print (word +" : "+ words[word])
 
-		elif inputWord == "printdicttofile":#for my benefit, to be removed
-			try:
-				fp = open(str(raw_input("Enter file name (including full path if necessary, doesn't need to exist): ")), "w")
-			except IOError:
-				print ("Can't open that file.")
-				sys.exit(1)
-			for word in words:
-				fp.write(word +" : "+ words[word] +'\n')
-			fp.close()
-			print ("Done")
+		elif inputWord == "gotopage":
+			import webbrowser
+			webbrowser.open(url)
 
 		elif inputWord.rstrip() == '' :
 			pass
