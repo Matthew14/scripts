@@ -1,11 +1,19 @@
 #! /usr/bin/env python
 #Author: Matthew O'Neill
+
 try:
-	import urllib2, sys, os, re
+	import urllib, sys, os, re
 except:
 	import sys
 	print("Need python 2.x.x, your version is: " +sys.version.split(' ')[0])
 	sys.exit(1)
+try:
+	from bs4 import BeautifulSoup
+except:
+	import webbrowser, sys
+	webbrowser.open("http://www.crummy.com/software/BeautifulSoup/bs4/download/")
+	sys.exit(1)
+
 url ="http://soomka.com/nadsat.html"
 def getDict():
 	"""
@@ -15,17 +23,16 @@ def getDict():
 	which is returned
 	"""
 	try:
-		request = urllib2.Request(url)
-		handle = urllib2.urlopen(request)
+		handle = urllib.urlopen(url)
 		content = handle.read()
 	except Exception:
 		print ("Cannot retrieve data. Internet working?")
-		exit(0)
+		exit(1)
 
 	#start and end of the area with the data I want
-	content = content.split("<B>Origins</B>")
-	content = content[1].split("<!--#include file=\"gohome.html\"-->")
-
+	# content = content.split("<B>Origins</B>")
+	# content = content[1].split("<!--#include file=\"gohome.html\"-->")
+	soup = BeautifulSoup(content)
 	#remove all html tags (not their contents)
 	content = re.sub("<[^>]*>", "", str(content[0]))
 	words = {}
