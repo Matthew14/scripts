@@ -1,0 +1,45 @@
+#! /usr/bin/env python3
+
+import urllib.request
+import smtplib
+
+def sendMail(ip):
+   server = 'localhost'
+   fromAddress = 'ip@matthewoneill.com'
+   toAddress = '14matthewoneill14@gmail.com'
+   subject = 'Raspberry Pi\'s IP address has changed'
+   message = """\
+From: {}
+To: {}
+Subject: {}
+
+The new external address is: {}
+
+""".format(fromAddress, toAddress, subject, ip)
+   
+   smtpserver = smtplib.SMTP(server)
+   smtpserver.sendmail(fromAddress, toAddress, message)
+   smtpserver.quit()
+
+def getIP():
+   req = urllib.request.Request('http://www.icanhazip.com')
+   data = urllib.request.urlopen(req).read().decode().strip()
+   
+   return data
+
+if __name__ == "__main__":
+   
+   currentIP = getIP()
+
+   fileName = 'externalIP'
+   try:
+      with open(fileName, 'r') as IPFile:
+         changed = IPFile.read() != currentIP
+      if changed:
+         with open(fileName, 'w') as IPFile:
+            IPFile.write(currentIP)
+         sendMail(currentIP)
+
+   except IOError as whoops:
+      raise whoops
+
