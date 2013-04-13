@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-
+"""Script that runs using cron on my raspberry pi to notify me of IP changes."""
 import urllib.request
 import smtplib
 
