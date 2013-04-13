@@ -31,7 +31,7 @@ if __name__ == "__main__":
    
    currentIP = getIP()
 
-   fileName = 'externalIP'
+   fileName = '/home/pi/bin/externalIP'
    try:
       with open(fileName, 'r') as IPFile:
          changed = IPFile.read() != currentIP
