@@ -45,7 +45,7 @@ def getCode(site):
    try:
       code = urllib.request.urlopen(site).getcode()
    except urllib.request.HTTPError as e:
-      code = e.code()
+      code = e.code
    except urllib.request.URLError as e:
       code = str(e.reason)
    except urllib.error.URLError as e:
@@ -58,6 +58,6 @@ if __name__ == "__main__":
    code = getCode(site)
    codeBlog = getCode(blog)
    log(code, codeBlog)
-   if code != 200 or codeBlog != 200:
-      sendMail(code, codeBlog)  
+   #if code != 200 or codeBlog != 200:
+   #   sendMail(code, codeBlog)  
 
