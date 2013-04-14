@@ -1,0 +1,51 @@
+#! /usr/bin/env python3
+"""Script that runs using cron on my raspberry pi to notify me if my website is down."""
+
+import urllib.request
+import smtplib
+import datetime
+
+site = 'http://www.matthewoneill.com'
+
+def log(code):
+   global site
+   filename = '/home/pi/.{}.log'.format(site.split('.')[-2])
+   date = str(datetime.datetime.now()).split('.')[0]
+   nolines = 0
+   try:
+      for line in open(filename):
+         nolines += 1
+   except IOError:
+      nolines = 0
+   with open(filename, 'a') as fo:
+      fo.write(str(nolines+1) + ': ' + date + ' ' + str(code) + '\n')
+
+def sendMail(code):
+   global site
+   server = 'localhost'
+   fromAddress = 'info@matthewoneill.com'
+   toAddress = '14matthewoneill14@gmail.com'
+   subject = 'Info from your Raspberry Pi'
+   message = """\
+From: {}
+To: {}
+Subject: {}
+
+{} returned the error code: {}.
+
+""".format(fromAddress, toAddress, subject, site, code)
+   
+   smtpserver = smtplib.SMTP(server)
+   smtpserver.sendmail(fromAddress, toAddress, message)
+   smtpserver.quit()
+
+def getCode():
+   return urllib.request.urlopen(site).getcode()
+
+if __name__ == "__main__":
+   
+   code = getCode()
+   log(code)
+   if code != 200:
+      sendMail(code)
+
