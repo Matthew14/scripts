@@ -12,7 +12,7 @@ else:
         forecasts = soup.find_all('span', class_='daybox')
         if a[1] == 'today':
                 today = forecasts[0].find_next().string
-                print (today)
+                   print (today)
         elif a[1] == 'tonight':
                 tonight = forecasts[1].next_sibling.next_sibling.next_sibling.string.rstrip()
                 print (tonight)
