@@ -15,7 +15,7 @@ def log(code, codeBlog):
    try:
       for line in open(filename):
          nolines += 1
-      nolines = nolines * nolines
+      nolines = int(nolines / 2)
    except IOError:
       nolines = 0
    with open(filename, 'a') as fo:
